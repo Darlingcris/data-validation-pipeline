@@ -1,0 +1,15 @@
+<label for="users">Select users (Ctrl + Click for multiple):</label>
+
+<div class="employee-list">
+  <select id="users" multiple size="10" style="width: 100%;"></select>
+</div>
+
+<label for="update-date">Select Date:</label>
+<input type="date" id="update-date">
+
+<div class="button-bar">
+  <button class="action" onclick="runUpdate()">Update</button>
+  <button onclick="google.script.host.close()">Close</button>
+</div>
+
+<div id="status"></div>
