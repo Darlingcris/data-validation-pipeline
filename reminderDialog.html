@@ -1,0 +1,171 @@
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+label {
+  font-weight: bold;
+  color: #333;
+}
+
+input[type="date"],
+button {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+button {
+  background-color: #5c3d8f; 
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+  border: none;
+}
+
+button:hover {
+  background-color: #611f69;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.status {
+  font-size: 13px;
+  color: #666;
+  margin-top: 5px;
+}
+
+<input type="date" id="date1">
+<input type="date" id="date2">
+<input type="date" id="date3">
+
+<button type="button" id="submitBtn" onclick="handleSubmit()">
+  Send Reminders
+</button>
+
+<div class="status" id="status"></div>
+
+<!-- User Selection -->
+    <div class="form-group">
+        <label for="employee">Select User:</label>
+        <select id="employee">
+            <option value="">Loading...</option>
+        </select>
+    </div>
+
+    <!-- Date Selection -->
+    <div class="form-group">
+        <label>Select Dates:</label>
+        <div id="date-list">
+            <div class="date-input-group">
+                <input type="date" class="date-input">
+                <button type="button" onclick="removeDate(this)" disabled>-</button>
+            </div>
+        </div>
+        <button type="button" onclick="addDate()">+ Add Date</button>
+    </div>
+
+    <!-- Actions -->
+    <div class="button-bar">
+        <button class="action" onclick="runUpdate()">Run Update</button>
+        <button onclick="google.script.host.close()">Close</button>
+    </div>
+
+    <div id="status"></div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        showStatus('Loading users...', true);
+
+        google.script.run
+            .withSuccessHandler(users => {
+                const select = document.getElementById('employee');
+                select.innerHTML = '<option value="">Select a user</option>';
+
+                if (users && users.length > 0) {
+                    users
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .forEach(user => {
+                            const option = new Option(user.name, user.id);
+                            select.appendChild(option);
+                        });
+
+                    showStatus('Ready.', false);
+                } else {
+                    showStatus('No users found.', false);
+                }
+            })
+            .withFailureHandler(err => {
+                showStatus('Error loading users.', false);
+                alert('Error loading users.');
+            })
+            .getEmployees();
+    });
+
+    function addDate() {
+        const list = document.getElementById('date-list');
+
+        const newDate = document.createElement('div');
+        newDate.className = 'date-input-group';
+        newDate.innerHTML =
+            '<input type="date" class="date-input">' +
+            '<button type="button" onclick="removeDate(this)">-</button>';
+
+        list.appendChild(newDate);
+        updateRemoveButtons();
+    }
+
+    function removeDate(button) {
+        button.parentElement.remove();
+        updateRemoveButtons();
+    }
+
+    function updateRemoveButtons() {
+        const buttons = document.querySelectorAll('#date-list button');
+        buttons.forEach(btn => btn.disabled = (buttons.length <= 1));
+    }
+
+    function runUpdate() {
+        const employeeId = document.getElementById('employee').value;
+
+        if (!employeeId) {
+            alert('Please select a user.');
+            return;
+        }
+
+        const dateInputs = document.querySelectorAll('.date-input');
+        const dates = Array.from(dateInputs)
+            .map(input => input.value)
+            .filter(Boolean);
+
+        if (dates.length === 0) {
+            alert('Please select at least one date.');
+            return;
+        }
+
+        showStatus('Processing...', true);
+
+        google.script.run
+            .withSuccessHandler(result => {
+                alert(result);
+                google.script.host.close();
+            })
+            .withFailureHandler(err => {
+                alert('Error occurred.');
+                showStatus('Error.', false);
+            })
+            .updateSpecificUserData(employeeId, [...new Set(dates)]);
+    }
+
+    function showStatus(message, isLoading) {
+        document.getElementById('status').textContent = message;
+        document.querySelector('.action').disabled = isLoading;
+    }
+</script>
+
