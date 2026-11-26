@@ -1,5 +1,7 @@
 # 📊 Data Validation & Time Tracking Automation
 
+🇬🇧 **English** · 🇧🇷 [Português](README.pt.md)
+
 ![Data Validation Pipeline — worked hours reconciled automatically between ClickUp and BigQuery](docs/capa/capa.png)
 
 **Portfolio / case study:** https://smart-validation-hub.lovable.app/
