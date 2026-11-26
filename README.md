@@ -68,14 +68,18 @@ The project is structured into three main layers:
 
 ## 📁 Project Structure
 
+```
 data-validation-pipeline/
 │
 ├── validationPipeline.js
 ├── multiUserDialog.html
 ├── bulkUpdateDialog.html
-├── reminderDialog.html
+├── dialog.html
+├── trackingbot.png
 ├── README.md
+├── README.pt.md
 └── screenshots/
+```
 
 ---
 
@@ -129,7 +133,29 @@ All integrations are represented using **mock data** to demonstrate architecture
 
 ## 📸 Screenshots
 
-*Add screenshots of the dialogs and spreadsheet here*
+### Spreadsheet menu
+All routines live in a custom menu inside the spreadsheet: updating dates, protecting cells, installing the daily trigger and sending messages.
+
+![Spreadsheet menu](screenshots/menu.png)
+
+### System A × System B validation
+For each person and each day, the spreadsheet compares the hours from both systems and flags the status: ✅ ok, Pending, Confirm or Review.
+
+![Validation between systems](screenshots/SystemA.png)
+
+### Updating multiple dates
+Dialog to update several dates for one user at once, with a summary of what was processed.
+
+![Update multiple dates](screenshots/update.png)
+
+![Processing complete](screenshots/updateok.png)
+
+### Slack reminders
+Choosing the dates and sending an automatic Slack reminder to anyone with a pending time entry.
+
+![Select dates to send](screenshots/System%20C.png)
+
+![Slack reminder](screenshots/System%20C%20ok.png)
 
 ---
 
