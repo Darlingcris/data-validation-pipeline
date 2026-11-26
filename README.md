@@ -2,7 +2,7 @@
 
 ![Data Validation Pipeline — worked hours reconciled automatically between ClickUp and BigQuery](docs/capa/capa.png)
 
-Este é o link do portifóçio: https://smart-validation-hub.lovable.app/
+**Portfolio / case study:** https://smart-validation-hub.lovable.app/
 
 ## 🚀 Overview
 
